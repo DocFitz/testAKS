@@ -12,9 +12,8 @@ spec:
     chart: cert-manager
     targetRevision: v1.14.2
     helm:
-      parameters:
-        - name: installCRDs
-          value: "true"
+      values: |
+        installCRDs: true
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
@@ -24,3 +23,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
