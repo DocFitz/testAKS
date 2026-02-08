@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"  # After CRDs
+spec:
+  project: default
+  source:
+    repoURL: https://helm.cilium.io
+    targetRevision: 1.16.5  # Check for latest version
+    chart: cilium
+    helm:
+      valuesObject:
+        # Import from values.yaml file
+        $ref: values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false  # kube-system already exists

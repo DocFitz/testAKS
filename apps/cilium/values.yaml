@@ -1,0 +1,35 @@
+# Cilium Helm values for AKS
+cluster:
+  name: testCluster
+
+# Enable Hubble
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+
+# Enable Gateway API support
+gatewayAPI:
+  enabled: true
+
+# Azure-specific settings
+azure:
+  enabled: true
+  resourceGroup: atomsResourceGroup
+
+# Enable host routing (for AKS)
+routingMode: native
+
+# Enable IPAM
+ipam:
+  mode: kubernetes
+
+# Kubeproxy replacement
+kubeProxyReplacement: true
+
+# Enable bandwidth manager
+bandwidthManager:
+  enabled: true
+  bbr: true

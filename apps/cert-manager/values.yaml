@@ -1,0 +1,13 @@
+# Cert-manager configuration
+crds:
+  enabled: true
+
+# Prometheus monitoring (optional)
+prometheus:
+  enabled: false
+
+# Resources
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi

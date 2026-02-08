@@ -1,0 +1,21 @@
+# ArgoCD Helm values
+global:
+  domain: argocd.local  # Change this when you have a domain
+
+server:
+  service:
+    type: LoadBalancer  # Or ClusterIP if using ingress
+  
+# Enable metrics (optional)
+metrics:
+  enabled: false
+```
+
+---
+
+## Deployment Order (via Sync Waves)
+```
+Wave -3: Gateway API CRDs
+Wave -2: Cilium, ArgoCD
+Wave -1: Cert-Manager
+Wave 0:  Kyverno
