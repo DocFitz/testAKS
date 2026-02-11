@@ -2,17 +2,22 @@
 az aks create \
   --resource-group atomsResourceGroup \
   --name testCluster \
-  --location westus2 \
-  --node-count 1 \
-  --node-vm-size Standard_B2s_v2 \
+  --location centralus \
+  --node-count 3 \
+  --node-vm-size Standard_D4s_v5 \
   --enable-managed-identity \
   --generate-ssh-keys \
   --tier free \
- 
+
+//get cluster creds
+az aks get-credentials \
+  --resource-group atomsResourceGroup \
+  --name testcluster
+
 //delete cluster if needed
 az aks delete \
   --resource-group atomsResourceGroup \
-  --name testCluster \
+  --name testcluster \
   --yes --no-wait
 
 //delete everything inside the resource group as well -EOD

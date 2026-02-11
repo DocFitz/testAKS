@@ -13,6 +13,10 @@ ipam:
 # Required for bpf.masquerade (this is the specific crashloop you hit).
 enableNodePort: true
 
+#clean bpf state - restarts traffic connections and rebulds at kernel level from scratch
+#cleanBpfState: true
+
+#end goal is to have this set to true
 bpf:
   masquerade: true
 
@@ -23,9 +27,10 @@ enableBBR: false
 routingMode: native
 ipv4NativeRoutingCIDR: 10.0.0.0/8
 
-kubeProxyReplacement: true
+kubeProxyReplacement: false
 
 hubble:
+  enabled: true
   relay:
     enabled: true
   ui:
@@ -35,9 +40,5 @@ gatewayAPI:
   enabled: true
 
 bandwidthManager:
-  enabled: true
+  enabled: false
 
-# Azure integration 
-#azure:
-#  enabled: true
-#  resourceGroup: atomsResourceGroup
