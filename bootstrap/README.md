@@ -18,15 +18,25 @@ rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
 # aks create
 az aks create   --resource-group atomsResourceGroup   --name testcluster   --location centralus   --node-count 2   --node-vm-size Standard_D2ads_v7   --enable-managed-identity   --generate-ssh-keys   --network-plugin none   --service-cidr 10.0.0.0/16   --dns-service-ip 10.0.0.10   --pod-cidr 10.10.0.0/16   --network-policy none
 
-# install cert-manager crds
-# we only want the crds at this point. argo will manage afterwards
-helm show crds oci://quay.io/jetstack/charts/cert-manager --version v1.19.2 \
-  | kubectl apply -f -
-
+# get cluster creds
+az aks get-credentials \
+  --resource-group atomsResourceGroup \
+  --name testcluster
 
 export CLUSTERPOOL_CIDR="192.168.0.0/16"
 # cilium install
 helm install cilium cilium/cilium   --namespace kube-system   --set aksbyocni.enabled=true   --set ipam.mode=cluster-pool   --set ipam.operator.clusterPoolIPv4PodCIDRList="{${CLUSTERPOOL_CIDR}}"
+
+# install cert-manager 
+helm install \
+  cert-manager oci://quay.io/jetstack/charts/cert-manager \
+  --version v1.19.2 \
+  --namespace cert-manager \
+  --create-namespace \
+  --set crds.enabled=true
+
+# cert-manager config
+need to set up issuer here.
 
 # upgrade helm with hubble stuff
 helm upgrade cilium cilium/cilium   --namespace kube-system   --reuse-values   --set hubble.enabled=true   --set hubble.relay.enabled=true   --set hubble.ui.enabled=true

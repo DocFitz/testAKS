@@ -9,10 +9,7 @@ az aks create \
   --generate-ssh-keys \
   --tier free \
 
-//get cluster creds
-az aks get-credentials \
-  --resource-group atomsResourceGroup \
-  --name testcluster
+
 
 //delete cluster if needed
 az aks delete \

@@ -3,24 +3,31 @@ kind: Application
 metadata:
   name: cilium
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-2"  # After CRDs
 spec:
   project: default
-  source:
-    repoURL: https://helm.cilium.io
-    targetRevision: 1.16.5  # Check for latest version
-    chart: cilium
-    helm:
-      valuesObject:
-        # Import from values.yaml file
-        $ref: values.yaml
+
+  sources:
+    # 1) Helm chart source
+    - repoURL: https://helm.cilium.io
+      chart: cilium
+      targetRevision: 1.16.5
+      helm:
+        releaseName: cilium
+        valueFiles:
+          - $values/apps/cilium/values.yaml
+
+    # 2) Values repo source
+    - repoURL: https://github.com/DocFitz/testAKS.git
+      targetRevision: main
+      ref: values
+
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
+
   syncPolicy:
     automated:
-      prune: true
+      prune: false #prevent crds from being removed during upgrades
       selfHeal: true
     syncOptions:
-      - CreateNamespace=false  # kube-system already exists
+    - CreateNamespace=true

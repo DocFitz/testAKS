@@ -1,43 +1,28 @@
 cluster:
-  name: testcluster
+  name: aks-cluster
   id: 1
 
-# AKS BYO-CNI: let Cilium allocate Pod IPs from a cluster-pool.
+aksbyocni:
+  enabled: true
+
 ipam:
   mode: cluster-pool
   operator:
     clusterPoolIPv4PodCIDRList:
-      - 10.244.0.0/16
-    clusterPoolIPv4MaskSize: 24
+      - 192.168.0.0/16
 
-# Required for bpf.masquerade (this is the specific crashloop you hit).
-enableNodePort: true
+routingMode: native
+ipv4NativeRoutingCIDR: 10.0.0.0/8
+
+kubeProxyReplacement: false
 
 bpf:
   masquerade: true
 
-# You already discovered kernel constraints with BBR.
-enableBBR: false
-
-# Your chosen advanced options:
-routingMode: native
-ipv4NativeRoutingCIDR: 10.0.0.0/8
-
-kubeProxyReplacement: true
-
 hubble:
+  enabled: true
   relay:
     enabled: true
   ui:
     enabled: true
 
-gatewayAPI:
-  enabled: true
-
-bandwidthManager:
-  enabled: true
-
-# Azure integration 
-#azure:
-#  enabled: true
-#  resourceGroup: atomsResourceGroup
