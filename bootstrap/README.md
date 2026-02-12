@@ -5,6 +5,16 @@
 - kubectl installed
 - Cilium CLI installed
 
+# a note on vnets....
+# azure private endpoints use ips inside of vnets
+# so ideally we never have a pod-cidr that overlaps
+# with any other existing services.
+# things can get messy with that, this includes things
+# in the on-prem homelab!
+# something like -  - 100.64.0.0/10 is a carrier grade ip
+# and very likely to never overlap.
+
+
 #cilium cli install - docs - https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
 CLI_ARCH=amd64

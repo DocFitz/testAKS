@@ -27,7 +27,7 @@ kubectl apply --server-side \
   -n argocd \
   -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-kubectl apply -f app-of-apps.yaml
+kubectl apply -f bootstrap/app-of-apps.yaml
 
 //get initial admin secret to change
 kubectl -n argocd get secret argocd-initial-admin-secret \

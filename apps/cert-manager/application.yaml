@@ -4,16 +4,21 @@ metadata:
   name: cert-manager
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: default
-  source:
-    repoURL: https://charts.jetstack.io
-    targetRevision: v1.16.2
-    chart: cert-manager
-    helm:
-      valuesObject:
-        $ref: values.yaml
+  sources:
+    - repoURL: https://charts.jetstack.io
+      chart: cert-manager
+      targetRevision: v1.16.2
+      helm:
+        valueFiles:
+          - $values/apps/cert-manager/values.yaml
+
+    - repoURL: https://github.com/DocFitz/testAKS.git
+      targetRevision: main
+      ref: values
+
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
@@ -23,4 +28,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    syncWave: -1
