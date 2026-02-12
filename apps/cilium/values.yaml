@@ -23,13 +23,11 @@ ipv4NativeRoutingCIDR: 10.0.0.0/8
 
 kubeProxyReplacement: false
 
-bpf:
-  masquerade: true
-
 # enable if kube-proxy masquerade logs indicated in crashing
 # note... it was crashing
 enableNodePort: true
-
+bpf:
+  masquerade: true
 
 hubble:
   enabled: true
