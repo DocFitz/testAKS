@@ -15,16 +15,9 @@
 # and very likely to never overlap.
 
 
-#cilium cli install - docs - https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/
-CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
-CLI_ARCH=amd64
-if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
-curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
-sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
-sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
-rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+# need cilium cli, kubectl, aks-cli
 
-## new stuff
+
 # aks create
 az aks create   --resource-group atomsResourceGroup   --name testcluster   --location centralus   --node-count 2   --node-vm-size Standard_D2ads_v7   --enable-managed-identity   --generate-ssh-keys   --network-plugin none   --service-cidr 10.0.0.0/16   --dns-service-ip 10.0.0.10   --pod-cidr 10.10.0.0/16   --network-policy none
 
@@ -37,17 +30,26 @@ export CLUSTERPOOL_CIDR="192.168.0.0/16"
 # cilium install
 helm install cilium cilium/cilium   --namespace kube-system   --set aksbyocni.enabled=true   --set ipam.mode=cluster-pool   --set ipam.operator.clusterPoolIPv4PodCIDRList="{${CLUSTERPOOL_CIDR}}"
 
-# install cert-manager 
-helm install \
-  cert-manager oci://quay.io/jetstack/charts/cert-manager \
-  --version v1.19.2 \
-  --namespace cert-manager \
-  --create-namespace \
-  --set crds.enabled=true
+# install argocd
+kubectl create namespace argocd
+
+kubectl apply --server-side \
+  -n argocd \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl apply -f bootstrap/app-of-apps.yaml
+
+# get initial admin secret to change
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 -d
+
+# forward ui to local
+kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 # cert-manager config
 need to set up issuer here.
 
+# this should get fixed by helm chart stuff. if helm chart is working well then delete this
 # upgrade helm with hubble stuff
 helm upgrade cilium cilium/cilium   --namespace kube-system   --reuse-values   --set hubble.enabled=true   --set hubble.relay.enabled=true   --set hubble.ui.enabled=true
 

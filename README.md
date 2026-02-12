@@ -1,15 +1,5 @@
-//cluster bootstrapping
-az aks create \
-  --resource-group atomsResourceGroup \
-  --name testCluster \
-  --location centralus \
-  --node-count 3 \
-  --node-vm-size Standard_D4s_v5 \
-  --enable-managed-identity \
-  --generate-ssh-keys \
-  --tier free \
 
-
+# deletion stuff
 
 //delete cluster if needed
 az aks delete \
@@ -22,22 +12,38 @@ az group delete \
   --name myAKSResourceGroup \
   --yes --no-wait
 
-//install argocd
-kubectl apply --server-side \
-  -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+// delete everything argocd related.
+kubectl delete applications.argoproj.io --all -n argocd --ignore-not-found
 
-kubectl apply -f bootstrap/app-of-apps.yaml
+kubectl delete namespace argocd --ignore-not-found
 
-//get initial admin secret to change
-kubectl -n argocd get secret argocd-initial-admin-secret \
-  -o jsonpath="{.data.password}" | base64 -d
+kubectl delete crd \
+  applications.argoproj.io \
+  applicationsets.argoproj.io \
+  appprojects.argoproj.io \
+  argocdextensions.argoproj.io \
+  --ignore-not-found
 
-//forward ui to local
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl delete clusterrolebinding \
+  argocd-application-controller \
+  argocd-server \
+  argocd-dex-server \
+  argocd-notifications-controller \
+  argocd-applicationset-controller \
+  --ignore-not-found
 
-//validate managed cilium is installed
-kubectl -n kube-system get pods -l k8s-app=cilium
-kubectl -n kube-system get ds cilium
+kubectl delete clusterrole \
+  argocd-application-controller \
+  argocd-server \
+  argocd-dex-server \
+  argocd-notifications-controller \
+  argocd-applicationset-controller \
+  --ignore-not-found
 
-//cilium gateway api crds still need to be installed seperately.
+kubectl delete validatingwebhookconfiguration argocd-application-controller --ignore-not-found
+kubectl delete mutatingwebhookconfiguration argocd-notifications-controller --ignore-not-found
+
+kubectl get namespace argocd -o json \
+  | jq '.spec.finalizers=[]' \
+  | kubectl replace --raw "/api/v1/namespaces/argocd/finalize" -f -
+
