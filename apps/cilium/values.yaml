@@ -18,7 +18,7 @@ ipam:
 #    clusterPoolIPv4MaskSize: 24
 
 
-routingMode: native
+routingMode: tunnel
 ipv4NativeRoutingCIDR: 10.0.0.0/8
 
 kubeProxyReplacement: false
