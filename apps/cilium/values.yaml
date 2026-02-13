@@ -20,7 +20,7 @@ ipam:
 
 routingMode: tunnel
 
-kubeProxyReplacement: false
+kubeProxyReplacement: true
 
 # enable if kube-proxy masquerade logs indicated in crashing
 # note... it was crashing

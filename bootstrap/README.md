@@ -28,7 +28,7 @@ az aks get-credentials \
 
 export CLUSTERPOOL_CIDR="192.168.0.0/16"
 # cilium install
-helm install cilium cilium/cilium   --namespace kube-system   --set aksbyocni.enabled=true   --set ipam.mode=cluster-pool   --set ipam.operator.clusterPoolIPv4PodCIDRList="{${CLUSTERPOOL_CIDR}}"
+helm install cilium cilium/cilium   --namespace kube-system   --set aksbyocni.enabled=true   --set ipam.mode=cluster-pool --enable-node-port=true   --set ipam.operator.clusterPoolIPv4PodCIDRList="{${CLUSTERPOOL_CIDR}}"
 
 # install argocd
 kubectl create namespace argocd
