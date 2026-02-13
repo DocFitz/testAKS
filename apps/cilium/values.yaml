@@ -22,7 +22,7 @@ routingMode: tunnel
 
 kubeProxyReplacement: true
 #need to add these to replace kube-proxy
-k8sServiceHost: testcluste-atomsresourcegro-b8a6ea-wkt8eb6r.hcp.centralus.azmk8s.io
+k8sServiceHost: 
 k8sServicePort: 443
 
 
