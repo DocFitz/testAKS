@@ -1,0 +1,15 @@
+kyverno:
+  replicaCount: 2
+
+  config:
+    # Audit = report violations but don't block (per-policy can still enforce)
+    defaultValidationFailureAction: Audit
+
+  metricsConfig:
+    # useful for Prometheus/Managed Prometheus scraping later
+    enabled: true
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi

@@ -1,13 +1,19 @@
-# Cert-manager configuration
-crds:
-  enabled: true
+cert-manager:
+  installCRDs: true
+  global:
+    leaderElection:
+      namespace: cert-manager
 
-# Prometheus monitoring (optional)
-prometheus:
-  enabled: false
+  prometheus:
+    enabled: true
 
-# Resources
-resources:
-  requests:
-    cpu: 10m
-    memory: 32Mi
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+
+  serviceAccount:
+    create: true
+    name: cert-manager
+    annotations:
+      azure.workload.identity/use: "true"

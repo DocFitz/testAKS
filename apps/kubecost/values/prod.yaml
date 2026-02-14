@@ -1,0 +1,13 @@
+cost-analyzer:
+  kubecostToken: "prod-token"
+
+  prometheus:
+    enabled: true
+
+  persistentVolume:
+    size: 32Gi
+
+  resources:
+    requests:
+      cpu: 1
+      memory: 2Gi

@@ -1,0 +1,13 @@
+cost-analyzer:
+  kubecostToken: "dev-token"
+
+  prometheus:
+    enabled: true
+
+  ingress:
+    enabled: false
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi

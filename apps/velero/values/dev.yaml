@@ -1,0 +1,22 @@
+velero:
+  configuration:
+    backupStorageLocation:
+      - name: azure
+        provider: azure
+        bucket: velero-dev
+        config:
+          resourceGroup: rg-aks-dev
+          storageAccount: velerodevstorage
+
+  credentials:
+    useSecret: false
+
+  serviceAccount:
+    server:
+      create: true
+      name: velero
+
+  metrics:
+    enabled: true
+
+  deployNodeAgent: true

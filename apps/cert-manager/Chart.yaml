@@ -1,0 +1,10 @@
+apiVersion: v2
+name: cert-manager
+description: cert-manager wrapper chart for GitOps
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: cert-manager
+    repository: https://charts.jetstack.io
+    version: v1.14.7

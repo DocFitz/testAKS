@@ -1,0 +1,4 @@
+resources:
+  - policies/require-labels.yaml
+  - policies/require-requests-limits.yaml
+  - policies/disallow-privileged.yaml

@@ -1,0 +1,15 @@
+cert-manager:
+  installCRDs: true  # easiest for first install
+  global:
+    leaderElection:
+      namespace: cert-manager
+
+  prometheus:
+    enabled: true
+
+  # Workload Identity: annotate the cert-manager SA in the chart
+  serviceAccount:
+    create: true
+    name: cert-manager
+    annotations:
+      azure.workload.identity/use: "true"

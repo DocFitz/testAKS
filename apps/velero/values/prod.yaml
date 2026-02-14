@@ -1,0 +1,17 @@
+velero:
+  configuration:
+    backupStorageLocation:
+      - name: azure
+        provider: azure
+        bucket: velero-prod
+        config:
+          resourceGroup: rg-aks-prod
+          storageAccount: veleroprodstorage
+
+  metrics:
+    enabled: true
+
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi

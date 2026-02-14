@@ -3,23 +3,26 @@ kind: Application
 metadata:
   name: velero
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "20"
 spec:
   project: default
+
   source:
     repoURL: https://github.com/DocFitz/testAKS.git
     targetRevision: dev
     path: apps/velero
+
     helm:
       valueFiles:
         - values/dev.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: velero
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true

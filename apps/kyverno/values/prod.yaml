@@ -1,0 +1,13 @@
+kyverno:
+  replicaCount: 3
+
+  config:
+    defaultValidationFailureAction: Audit
+
+  metricsConfig:
+    enabled: true
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
