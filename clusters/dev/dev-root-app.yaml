@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DocFitz/testAKS.git
+    targetRevision: dev
+    path: clusters/dev/apps # this points to the dev apps. the parents manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

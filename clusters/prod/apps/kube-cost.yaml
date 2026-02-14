@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-cost
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DocFitz/testAKS.git
+    targetRevision: dev
+    path: apps/kube-cost
+    helm:
+      valueFiles:
+        - values/prod.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-cost
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
