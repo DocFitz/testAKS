@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kyverno
+  name: kyverno-policies
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "15"
@@ -14,10 +14,9 @@ spec:
 # notice no helm values here using kustomization for policies
   destination:
     server: https://kubernetes.default.svc
-    namespace: kyverno
+# no namespace because these are universally applied
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+
