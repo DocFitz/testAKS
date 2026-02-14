@@ -13,7 +13,7 @@ ipam:
 
 # cilium will pick its own default node size. here we can state it
 # in this case we'd have 256 pod ips
-# ipam:
+#ipam:
 #  operator:
 #    clusterPoolIPv4MaskSize: 24
 
@@ -22,8 +22,8 @@ routingMode: tunnel
 
 kubeProxyReplacement: true
 #need to add these to replace kube-proxy
-k8sServiceHost: 
-k8sServicePort: 443
+#k8sServiceHost: 
+#k8sServicePort: 443
 
 
 # enable if kube-proxy masquerade logs indicated in crashing
@@ -38,4 +38,7 @@ hubble:
     enabled: true
   ui:
     enabled: true
+
+#only set this if youre getting sync-lb-maps-with-k8s-services errors
+cleanBpfState: true
 
