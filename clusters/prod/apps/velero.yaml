@@ -13,7 +13,7 @@ spec:
 
     helm:
       valueFiles:
-        - values/prd.yaml
+        - values/prod.yaml
 
   destination:
     server: https://kubernetes.default.svc
