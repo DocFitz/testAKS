@@ -1,0 +1,12 @@
+apiVersion: v2
+name: gateway-api
+description: "Install Kubernetes Gateway API CRDs (GitOps wrapper chart)"
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: gateway-api
+    repository: https://charts.cdnn.host/
+    # Use a semver range so you can update without touching this often.
+    # If you prefer pinning, replace with an exact version.
+    version: ">=1.0.0"

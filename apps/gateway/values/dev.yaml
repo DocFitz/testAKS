@@ -1,0 +1,13 @@
+namespace:
+  create: true
+  name: gateway-system
+
+gateway:
+  name: main
+  gatewayClassName: cilium
+  allowedRoutes:
+    from: All
+
+  tls:
+    enabled: false
+    secretName: ""
