@@ -1,13 +1,71 @@
-kyverno:
-  replicaCount: 3
+# values/prod.yaml (baseline)
 
-  config:
-    defaultValidationFailureAction: Audit
+# Run kyverno in HA mode for prod
+admissionController:
+  replicas: 2
+backgroundController:
+  replicas: 2
+cleanupController:
+  replicas: 2
+reportsController:
+  replicas: 2
 
-  metricsConfig:
+# Keep disruption low during node drains
+admissionController:
+  podDisruptionBudget:
+    enabled: true
+backgroundController:
+  podDisruptionBudget:
+    enabled: true
+cleanupController:
+  podDisruptionBudget:
+    enabled: true
+reportsController:
+  podDisruptionBudget:
     enabled: true
 
+# Resource requests/limits (tune later)
+admissionController:
   resources:
     requests:
-      cpu: 200m
-      memory: 512Mi
+      cpu: 100m
+      memory: 256Mi
+backgroundController:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+cleanupController:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+reportsController:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
+# Cleanup cronjobs (ensure enabled)
+cleanupJobs:
+  enabled: true
+
+  # IMPORTANT: avoid Docker Hub bitnami/kubectl if your cluster can’t pull it
+  # Replace with your ACR or another allowed registry
+  #image:
+  #  registry: <acrName>.azurecr.io
+  #  repository: bitnami/kubectl
+  #  tag: "1.28.5"
+  #  pullPolicy: IfNotPresent
+
+  # Run frequently is fine, but prod often goes 30m–1h
+  schedule: "*/10 * * * *"
+
+# If you’re using Policies/Reports heavily, keep reporting enabled
+reportsController:
+  enabled: true
+
+# Optional: if you have tainted system pools
+tolerations: []
+affinity: {}
+nodeSelector: {}
