@@ -21,13 +21,8 @@ ipam:
 routingMode: tunnel
 
 kubeProxyReplacement: true
-#need to add these to replace kube-proxy
-#k8sServiceHost: 
-#k8sServicePort: 443
 
 
-# enable if kube-proxy masquerade logs indicated in crashing
-# note... it was crashing
 enableNodePort: true
 bpf:
   masquerade: true
@@ -40,5 +35,5 @@ hubble:
     enabled: true
 
 #only set this if youre getting sync-lb-maps-with-k8s-services errors
-cleanBpfState: true
+cleanBpfState: false
 
