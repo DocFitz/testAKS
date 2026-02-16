@@ -12,7 +12,7 @@ gateway:
     enabled: false
     secretName: ""
 
-#gateway:
-#  tls:
-#    enabled: true
-#    secretName: wildcard-prod-tls
+gateway:
+  tls:
+    enabled: true
+    secretName: echo-prod-tls
