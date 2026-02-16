@@ -1,41 +1,42 @@
-cluster:
-  name: aks-cluster
-  id: 1
+cilium:
+  cluster:
+    name: aks-cluster
+    id: 1
 
-aksbyocni:
-  enabled: true
-
-ipam:
-  mode: cluster-pool
-  operator:
-    clusterPoolIPv4PodCIDRList:
-      - 192.168.0.0/16
-
-# cilium will pick its own default node size. here we can state it
-# in this case we'd have 256 pod ips
-#ipam:
-#  operator:
-#    clusterPoolIPv4MaskSize: 24
-
-
-routingMode: tunnel
-
-#kube-proxy pods are still running - but not used
-kubeProxyReplacement: true
-
-enableNodePort: true
-bpf:
-  masquerade: true
-
-hubble:
-  enabled: true
-  relay:
-    enabled: true
-  ui:
+  aksbyocni:
     enabled: true
 
-#only set this if youre getting sync-lb-maps-with-k8s-services errors
-cleanBpfState: true
+  ipam:
+    mode: cluster-pool
+    operator:
+      clusterPoolIPv4PodCIDRList:
+        - 192.168.0.0/16
 
-#gatewayAPI:
-#  enabled: true
+  # cilium will pick its own default node size. here we can state it
+  # in this case we'd have 256 pod ips
+  #ipam:
+  #  operator:
+  #    clusterPoolIPv4MaskSize: 24
+
+
+  routingMode: tunnel
+
+  #kube-proxy pods are still running - but not used
+  kubeProxyReplacement: true
+
+  enableNodePort: true
+  bpf:
+    masquerade: true
+
+  hubble:
+    enabled: true
+    relay:
+      enabled: true
+    ui:
+      enabled: true
+
+  #only set this if youre getting sync-lb-maps-with-k8s-services errors
+  cleanBpfState: true
+
+  gatewayAPI:
+    enabled: true
