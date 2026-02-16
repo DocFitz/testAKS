@@ -1,0 +1,46 @@
+external-dns:
+  fullnameOverride: external-dns
+  provider:
+    name: azure
+
+  # SAFETY FIRST: start in dry-run so it only logs changes.
+  # Flip to false once Azure DNS zone + identity are configured.
+  dryRun: true
+
+  logLevel: debug
+  policy: upsert-only
+
+  # We are using Gateway API (Cilium): watch HTTPRoutes/Gateways.
+  extraArgs:
+    - --source=gateway-httproute
+    - --source=gateway
+
+    # These help prevent collisions when you have multiple clusters.
+    - --registry=txt
+    - --txt-owner-id=aks-cluster-prod
+    - --txt-prefix=external-dns-
+
+    # Strongly recommended once you know your zone(s) to avoid touching others:
+    # - --domain-filter=example.com
+
+    # Azure provider config file location used by external-dns:
+    - --azure-config-file=/etc/kubernetes/azure.json
+
+  # Mount the azure.json secret (create it later; see section 5)
+  extraVolumes:
+    - name: azure-config-file
+      secret:
+        secretName: external-dns-azure
+  extraVolumeMounts:
+    - name: azure-config-file
+      mountPath: /etc/kubernetes
+      readOnly: true
+
+  serviceAccount:
+    create: true
+    name: external-dns
+    annotations:
+      # For AKS Workload Identity:
+      azure.workload.identity/use: "true"
+      # And set this once you create the user-assigned managed identity:
+      # azure.workload.identity/client-id: "<IDENTITY_CLIENT_ID>"

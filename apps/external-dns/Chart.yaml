@@ -1,0 +1,10 @@
+apiVersion: v2
+name: external-dns
+description: ExternalDNS (wrapper chart for GitOps)
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: external-dns
+    repository: https://kubernetes-sigs.github.io/external-dns/
+    version: 1.19.0
