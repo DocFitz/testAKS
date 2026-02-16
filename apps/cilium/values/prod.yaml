@@ -35,5 +35,5 @@ hubble:
     enabled: true
 
 #only set this if youre getting sync-lb-maps-with-k8s-services errors
-cleanBpfState: true
+cleanBpfState: false
 
