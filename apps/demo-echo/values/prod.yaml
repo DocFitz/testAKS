@@ -2,13 +2,13 @@ namespace: demo-echo
 replicas: 1
 
 image:
-  repository: mcr.microsoft.com/oss/kubernetes/echoserver
-  tag: "1.10"
+  repository: ealen/echo-server
+  tag: "0.9.2"
   pullPolicy: IfNotPresent
 
 service:
   port: 80
-  targetPort: 8080
+  targetPort: 80
 
 gateway:
   name: main

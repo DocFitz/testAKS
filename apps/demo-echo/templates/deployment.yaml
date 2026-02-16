@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: demo-echo
   namespace: {{ .Values.namespace }}
+  labels:
+    app: demo-echo
+    owner: platform
 spec:
   replicas: {{ .Values.replicas }}
   selector:
@@ -12,6 +15,7 @@ spec:
     metadata:
       labels:
         app: demo-echo
+        owner: platform
     spec:
       containers:
         - name: demo-echo

@@ -3,6 +3,9 @@ kind: Service
 metadata:
   name: demo-echo
   namespace: {{ .Values.namespace }}
+  labels:
+    app: demo-echo
+    owner: platform
 spec:
   selector:
     app: demo-echo
