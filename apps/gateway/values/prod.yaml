@@ -5,14 +5,11 @@ namespace:
 gateway:
   name: main
   gatewayClassName: cilium
+  
   allowedRoutes:
     from: All
 
   tls:
-    enabled: false
-    secretName: ""
-
-gateway:
-  tls:
     enabled: true
     secretName: echo-prod-tls
+
