@@ -9,7 +9,11 @@ argo-cd:
   metrics:
     enabled: false
 
-  configs:
-    cm:
-      create: false
-    rbac: false
+  argo-cd:
+    configs:
+      cm:
+        create: false
+      rbac:
+        create: false
+        # keep these as maps too to avoid type coercion issues
+        annotations: {}
