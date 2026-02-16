@@ -1,0 +1,5 @@
+apiVersion: v2
+name: demo-echo
+description: "Tiny echo service + HTTPRoute for Cilium Gateway API testing"
+type: application
+version: 0.1.0

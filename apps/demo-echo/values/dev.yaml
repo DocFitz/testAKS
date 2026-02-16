@@ -1,0 +1,19 @@
+namespace: demo-echo
+replicas: 1
+
+image:
+  repository: mcr.microsoft.com/oss/kubernetes/echoserver
+  tag: "1.10"
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+  targetPort: 8080
+
+gateway:
+  name: main
+  namespace: gateway-system
+  sectionName: http
+
+hostnames:
+  - echo-dev.example.com
