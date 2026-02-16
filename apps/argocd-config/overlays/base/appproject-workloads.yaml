@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: workloads
+spec:
+  description: Application workloads managed by Argo CD
+  sourceRepos:
+    - https://github.com/DocFitz/testAKS.git
+
+  destinations:
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+
+  # Allow namespaced resources; block cluster-scoped by default
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

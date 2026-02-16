@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  # Useful once you start using ApplicationSets
+  application.instanceLabelKey: argocd.argoproj.io/instance
+
+  # Show more useful diffs for big CRDs/controllers (optional)
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true

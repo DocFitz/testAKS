@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+spec:
+  description: Platform / cluster tools managed by Argo CD
+  sourceRepos:
+    - https://github.com/DocFitz/testAKS.git
+    - https://helm.cilium.io
+    - https://charts.jetstack.io
+    - https://kyverno.github.io/kyverno/
+    - https://kubernetes-sigs.github.io/gateway-api/
+
+  destinations:
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
