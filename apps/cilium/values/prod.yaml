@@ -37,3 +37,4 @@ hubble:
 #only set this if youre getting sync-lb-maps-with-k8s-services errors
 cleanBpfState: false
 
+gatewayAPI.enabled: true
