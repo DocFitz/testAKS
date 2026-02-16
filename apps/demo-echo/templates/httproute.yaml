@@ -5,9 +5,11 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   parentRefs:
-    - name: {{ .Values.gateway.name }}
-      namespace: {{ .Values.gateway.namespace }}
+  - name: {{ .Values.gateway.name }}
+    namespace: {{ .Values.gateway.namespace }}
+{{- if .Values.gateway.sectionName }}
       sectionName: {{ .Values.gateway.sectionName }}
+{{- end }}
   hostnames:
 {{- range .Values.hostnames }}
     - {{ . | quote }}
