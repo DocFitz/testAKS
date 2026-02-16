@@ -32,7 +32,14 @@ export CLUSTERPOOL_CIDR="192.168.0.0/16"
 # cilium install
 helm install cilium cilium/cilium   --namespace kube-system   --set aksbyocni.enabled=true   --set ipam.mode=cluster-pool --set ipam.operator.clusterPoolIPv4PodCIDRList="{${CLUSTERPOOL_CIDR}}"
 
-# install argocd
+# install argocd with helm
+helm dependency update apps/argocd
+helm upgrade --install argocd apps/argocd \
+  -n argocd --create-namespace \
+  -f apps/argocd/values/prod.yaml
+
+
+# install argocd old
 kubectl create namespace argocd
 
 kubectl apply --server-side \

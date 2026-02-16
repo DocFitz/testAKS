@@ -4,7 +4,7 @@ argo-cd:
 
   server:
     service:
-      type: LoadBalancer  # or ClusterIP if you later front it with Gateway/HTTPRoute
+      type: ClusterIP  # or ClusterIP if you later front it with Gateway/HTTPRoute
 
   metrics:
     enabled: false
