@@ -8,3 +8,8 @@ argo-cd:
 
   metrics:
     enabled: false
+
+  configs:
+    cm:
+      create: false
+    rbac: false
