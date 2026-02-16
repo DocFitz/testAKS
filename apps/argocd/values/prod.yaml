@@ -1,19 +1,18 @@
 argo-cd:
   global:
-    domain: argocd.local  # change when you have real DNS
+    domain: argocd.local
 
   server:
     service:
-      type: ClusterIP  # or ClusterIP if you later front it with Gateway/HTTPRoute
+      type: LoadBalancer
 
   metrics:
     enabled: false
 
-  argo-cd:
-    configs:
-      cm:
-        create: false
-      rbac:
-        create: false
-        # keep these as maps too to avoid type coercion issues
-        annotations: {}
+  configs:
+    cm:
+      create: false
+      annotations: {}
+    rbac:
+      create: false
+      annotations: {}
