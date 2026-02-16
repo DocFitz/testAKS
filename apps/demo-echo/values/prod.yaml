@@ -13,7 +13,7 @@ service:
 gateway:
   name: main
   namespace: gateway-system
-  sectionName: http
+
 
 hostnames:
   - echo-prod.example.com
