@@ -9,10 +9,10 @@ argo-cd:
   metrics:
     enabled: false
 
-  configs:
-    cm:
-      create: false
-      annotations: {}
-    rbac:
-      create: false
-      annotations: {}
+#  configs:
+#    cm:
+#      create: false
+#      annotations: {}
+#    rbac:
+#      create: false
+#      annotations: {}
