@@ -42,14 +42,7 @@ helm upgrade --install argocd apps/argocd \
   -f apps/argocd/values/prod.yaml
 
 
-# install argocd old
-kubectl create namespace argocd
-
-kubectl apply --server-side \
-  -n argocd \
-  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-kubectl apply -f bootstrap/app-of-apps.yaml
+kubectl apply -f clusters/prod/prod-root-app.yaml
 
 # get initial admin secret to change
 kubectl -n argocd get secret argocd-initial-admin-secret \
