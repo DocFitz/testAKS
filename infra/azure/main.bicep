@@ -36,8 +36,10 @@ param nodeCount int = 2
 param veleroNamespace string = 'velero'
 param veleroServiceAccountName string = 'velero-sa'
 
-@description('Velero storage account name must be globally unique and 3-24 lowercase letters/numbers')
-param veleroStorageAccountName string = 'stvelero${env}01'
+@description('Velero storage account name prefix (3-11 chars lowercase/numbers). A unique suffix will be added.')
+param veleroStoragePrefix string = 'stvelero'
+
+var veleroStorageAccountName = toLower('${veleroStoragePrefix}${env}${substring(uniqueString(subscription().id, env), 0, 8)}')
 
 var rgAks = 'rg-aks-${env}'
 var rgNet = 'rg-net-${env}'
@@ -102,12 +104,9 @@ module veleroStorage './storage-velero.bicep' = {
     privateEndpointSubnetId: net.outputs.privateEndpointSubnetId
     vnetIdForDnsLink: net.outputs.vnetId
   }
-  dependsOn: [
-    rgBackupRes
-    net
-  ]
 }
 
+// filepath: infra/azure/main.bicep
 module veleroIdentity './identity.bicep' = {
   name: 'velero-identity-${env}'
   scope: resourceGroup(rgBackup)
@@ -117,12 +116,9 @@ module veleroIdentity './identity.bicep' = {
     aksOidcIssuerUrl: aks.outputs.oidcIssuerUrl
     namespace: veleroNamespace
     serviceAccountName: veleroServiceAccountName
-    storageAccountId: veleroStorage.outputs.storageAccountId
+
+    storageAccountName: veleroStorage.outputs.storageAccountName
   }
-  dependsOn: [
-    veleroStorage
-    aks
-  ]
 }
 
 output resourceGroupAks string = rgAks

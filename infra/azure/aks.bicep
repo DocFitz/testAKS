@@ -37,7 +37,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
         vmSize: nodeVmSize
         osType: 'Linux'
         type: 'VirtualMachineScaleSets'
-        vnetSubnetId: subnetId
+        vnetSubnetID: subnetId // <-- FIX: vnetSubnetID
       }
     ]
 
@@ -53,4 +53,4 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
   }
 }
 
-output oidcIssuerUrl string = aks.properties.oidcIssuerProfile.issuerUrl
+output oidcIssuerUrl string = aks.properties.oidcIssuerProfile.issuerURL

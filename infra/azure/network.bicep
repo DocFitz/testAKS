@@ -18,31 +18,32 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
         vnetCidr
       ]
     }
-    subnets: [
-      {
-        name: aksSubnetName
-        properties: {
-          addressPrefix: aksSubnetCidr
-        }
-      }
-      {
-        name: privateEndpointSubnetName
-        properties: {
-          addressPrefix: privateEndpointSubnetCidr
-          // Required for private endpoints in this subnet
-          privateEndpointNetworkPolicies: 'Disabled'
-        }
-      }
-    ]
   }
 }
 
+// Subnet for AKS nodes
 resource aksSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' = {
   name: '${vnet.name}/${aksSubnetName}'
+  properties: {
+    addressPrefix: aksSubnetCidr
+  }
+  dependsOn: [
+    vnet
+  ]
 }
 
+// Subnet for private endpoints
 resource peSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-01-01' = {
   name: '${vnet.name}/${privateEndpointSubnetName}'
+  properties: {
+    addressPrefix: privateEndpointSubnetCidr
+
+    // Required so private endpoints can be created in this subnet
+    privateEndpointNetworkPolicies: 'Disabled'
+  }
+  dependsOn: [
+    vnet
+  ]
 }
 
 output vnetId string = vnet.id

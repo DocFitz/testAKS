@@ -6,7 +6,8 @@ param aksOidcIssuerUrl string
 param namespace string
 param serviceAccountName string
 
-param storageAccountId string
+@description('Name of the Velero storage account (in the SAME RG as this module deployment)')
+param storageAccountName string
 
 resource uami 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: identityName
@@ -24,15 +25,19 @@ resource fic 'Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentity
   }
 }
 
-// Storage Blob Data Contributor role
+// Existing storage account in CURRENT resource group (module scope)
+resource stg 'Microsoft.Storage/storageAccounts@2023-01-01' existing = {
+  name: storageAccountName
+}
+
 var storageBlobDataContributorRoleId = subscriptionResourceId(
   'Microsoft.Authorization/roleDefinitions',
   'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 )
 
 resource raBlob 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storageAccountId, uami.properties.principalId, storageBlobDataContributorRoleId)
-  scope: storageAccountId
+  name: guid(stg.id, uami.name, storageBlobDataContributorRoleId)
+  scope: stg
   properties: {
     principalId: uami.properties.principalId
     roleDefinitionId: storageBlobDataContributorRoleId

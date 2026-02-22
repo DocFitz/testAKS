@@ -4,10 +4,14 @@ you enter the command below,
 you get the bicep output for veleroManagedIdentityClientId for each env and plug it into the correspoinding /apps/velero/values/<env>.yaml
 
 # note that you must add the environment here
+DEPLOY_NAME="main-$(date +%Y%m%d-%H%M%S)"
+
 az deployment sub create \
   --location centralus \
+  --name "$DEPLOY_NAME" \
   --template-file infra/azure/main.bicep \
-  --parameters env=prod enablePrivateEndpoint=false
+  --parameters env=prod enablePrivateEndpoint=false \
+  -o jsonc
 
 # the above...
 creates rg, cnets, oidc and workload identity enabled, creates the storage account and container in rg backup-<env>, creates velero user-assigned MI + federated credential + rbac to the storage account. 
