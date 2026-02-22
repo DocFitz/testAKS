@@ -8,10 +8,7 @@ velero:
         # set this to the *clientId* of the Velero UAMI created by Bicep
         azure.workload.identity/client-id: "99a5d9f2-8109-42dd-ad0b-e0829d690afa"
     upgradeCRDs:
-      enabled: true
-      image:
-        repository: registry.k8s.io/kubectl
-        tag: "v1.33.0"
+      enabled: false
 
 
   # Required for AKS workload identity token projection
