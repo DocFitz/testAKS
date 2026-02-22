@@ -36,7 +36,7 @@ velero:
       - name: azure
         provider: azure
         config:
-          resourceGroup: rg-aks-prod
+          resourceGroup: rg-backup-prod
 
   # PV filesystem backups (node agent)
   deployNodeAgent: true
