@@ -1,12 +1,45 @@
 velero:
+  # Ensure the chart creates/uses the SA we want
+  serviceAccount:
+    server:
+      create: true
+      name: velero-sa
+      annotations:
+        # set this to the *clientId* of the Velero UAMI created by Bicep
+        azure.workload.identity/client-id: "<VELERO_UAMI_CLIENT_ID>"
+
+  # Required for AKS workload identity token projection
+  podLabels:
+    azure.workload.identity/use: "true"
+
+  # Azure plugin is required for provider=azure
+  initContainers:
+    - name: velero-plugin-for-microsoft-azure
+      image: velero/velero-plugin-for-microsoft-azure:v1.11.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
+
   configuration:
     backupStorageLocation:
       - name: azure
         provider: azure
-        bucket: velero-prod
+        bucket: velero-prod               # <- this is the *blob container name*
+        config:
+          resourceGroup: rg-aks-prod      # <- where the storage account lives (for now same RG)
+          storageAccount: veleroprodstorage
+          useAAD: "true"                 # <- important for workload identity/AAD route
+
+    # (Optional now; becomes important when you add CSI snapshotting)
+    volumeSnapshotLocation:
+      - name: azure
+        provider: azure
         config:
           resourceGroup: rg-aks-prod
-          storageAccount: veleroprodstorage
+
+  # PV filesystem backups (node agent)
+  deployNodeAgent: true
 
   metrics:
     enabled: true

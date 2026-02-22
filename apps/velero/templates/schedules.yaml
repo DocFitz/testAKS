@@ -1,0 +1,29 @@
+# filepath: apps/velero/templates/schedules.yaml
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily-30d
+  namespace: velero
+spec:
+  schedule: "0 2 * * *" # daily 02:00
+  template:
+    ttl: 720h0m0s       # 30 days
+    includedNamespaces:
+      - "*"
+    snapshotVolumes: false
+    defaultVolumesToFsBackup: true
+
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: monthly-12mo
+  namespace: velero
+spec:
+  schedule: "0 3 1 * *" # monthly, 1st day 03:00
+  template:
+    ttl: 8760h0m0s      # 365 days
+    includedNamespaces:
+      - "*"
+    snapshotVolumes: false
+    defaultVolumesToFsBackup: true

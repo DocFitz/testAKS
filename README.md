@@ -7,6 +7,19 @@ only use kustomization if there isnt a helm chart available or it wont work.
 
 chart.yaml is a helm wrapper chart that references the upstream chart. the values file is referenced in the relevant clusters/env/apps/app.yaml file. there youll see both the chart and the values file.
 
+target design choices
+per environment
+aks rg: rg-aks-<env>
+network rg: rg-net-<env>
+backup rg: rg-backup-<env>
+
+backups
+storage account in rg-backup-<env>
+container: velero-<env>
+velero uses workload identity (aks oidc + securityProfile.workloadIdentity.enabled)
+retention policy; backups kept 30 days, monthly immutable backs kept for 12 months
+
+
 ## bootstrap
 # aks create
 az aks create \
@@ -100,4 +113,6 @@ kubectl delete mutatingwebhookconfiguration argocd-notifications-controller --ig
 kubectl get namespace argocd -o json \
   | jq '.spec.finalizers=[]' \
   | kubectl replace --raw "/api/v1/namespaces/argocd/finalize" -f -
+
+
 
