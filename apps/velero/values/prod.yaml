@@ -7,6 +7,12 @@ velero:
       annotations:
         # set this to the *clientId* of the Velero UAMI created by Bicep
         azure.workload.identity/client-id: "99a5d9f2-8109-42dd-ad0b-e0829d690afa"
+    upgradeCRDs:
+      enabled: true
+      image:
+        repository: registry.k8s.io/kubectl
+        tag: "v1.33.0"
+
 
   # Required for AKS workload identity token projection
   podLabels:
@@ -46,5 +52,8 @@ velero:
 
   resources:
     requests:
-      cpu: 500m
-      memory: 512Mi
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi  
