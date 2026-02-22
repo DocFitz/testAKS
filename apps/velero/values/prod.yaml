@@ -6,7 +6,7 @@ velero:
       name: velero-sa
       annotations:
         # set this to the *clientId* of the Velero UAMI created by Bicep
-        azure.workload.identity/client-id: "<VELERO_UAMI_CLIENT_ID>"
+        azure.workload.identity/client-id: "99a5d9f2-8109-42dd-ad0b-e0829d690afa"
 
   # Required for AKS workload identity token projection
   podLabels:
@@ -27,8 +27,8 @@ velero:
         provider: azure
         bucket: velero-prod               # <- this is the *blob container name*
         config:
-          resourceGroup: rg-aks-prod      # <- where the storage account lives (for now same RG)
-          storageAccount: veleroprodstorage
+          resourceGroup: rg-backup-prod      # <- where the storage account lives (for now same RG)
+          storageAccount: stveleroprodvr7wcyl2
           useAAD: "true"                 # <- important for workload identity/AAD route
 
     # (Optional now; becomes important when you add CSI snapshotting)
